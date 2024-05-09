@@ -23,4 +23,6 @@ bevy_playdate = { path = "../bevy_playdate" }
 crankstart = { path = "../crankstart" }
 crankstart-sys = { path = "../crankstart/crankstart-sys" }
 bevy = { path = "../bevy", default-features = false, features = ["no_std"] }
+cortex-m = { version = "0.7", features = ["critical-section-single-core"]}
+critical-section = "1"
 

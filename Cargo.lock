@@ -594,8 +594,10 @@ dependencies = [
  "anyhow",
  "bevy",
  "bevy_playdate",
+ "cortex-m",
  "crankstart",
  "crankstart-sys",
+ "critical-section",
  "euclid",
 ]
 
