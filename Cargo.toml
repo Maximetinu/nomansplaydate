@@ -3,6 +3,24 @@ name = "nomansplaydate"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[profile.dev]
+panic = "abort"
+opt-level = 'z'
+lto = true
+
+[profile.release]
+panic = "abort"
+opt-level = 'z'
+lto = true
+
+[lib]
+crate-type = ["staticlib", "cdylib"]
 
 [dependencies]
+anyhow = { version = "1.0.66", default-features = false }
+euclid = { version = "0.22.7", default-features = false, features = [ "libm" ] }
+bevy_playdate = { path = "../bevy_playdate" }
+crankstart = { path = "../crankstart" }
+crankstart-sys = { path = "../crankstart/crankstart-sys" }
+bevy = { path = "../bevy", default-features = false, features = ["no_std"] }
+

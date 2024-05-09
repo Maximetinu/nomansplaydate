@@ -1,0 +1,8 @@
+[[target]]
+name = "nomansplaydate"
+assets = [
+    "assets/heart.png"
+]
+[target.metadata]
+name = "NoMansPlaydate"
+version = "0.1.0"
