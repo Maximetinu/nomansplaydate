@@ -19,7 +19,7 @@ crate-type = ["staticlib", "cdylib"]
 [dependencies]
 anyhow = { version = "1.0.66", default-features = false }
 euclid = { version = "0.22.7", default-features = false, features = [ "libm" ] }
-bevy_playdate = { path = "../bevy_playdate" }
+# bevy_playdate = { path = "../bevy_playdate" }
 crankstart = { path = "../crankstart" }
 crankstart-sys = { path = "../crankstart/crankstart-sys" }
 bevy = { path = "../bevy", default-features = false, features = ["no_std"] }
