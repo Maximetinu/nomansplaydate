@@ -20,9 +20,10 @@ crate-type = ["staticlib", "cdylib"]
 anyhow = { version = "1.0.66", default-features = false }
 euclid = { version = "0.22.7", default-features = false, features = [ "libm" ] }
 # bevy_playdate = { path = "../bevy_playdate" }
-crankstart = { path = "../crankstart" }
-crankstart-sys = { path = "../crankstart/crankstart-sys" }
-bevy = { path = "../bevy", default-features = false, features = ["no_std"] }
+crankstart = { git = "https://github.com/pd-rs/crankstart.git" }
+crankstart-sys = { git = "https://github.com/pd-rs/crankstart.git" }
+# bevy = { path = "../bevy", default-features = false, features = ["no_std"] }
+bevy = { git = "https://github.com/maximetinu/bevy.git", branch = "nostd", default-features = false, features = ["no_std"] }
 cortex-m = { version = "0.7", features = ["critical-section-single-core"]}
 critical-section = "1"
 

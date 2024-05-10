@@ -64,6 +64,7 @@ dependencies = [
 [[package]]
 name = "bevy"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "bevy_internal",
 ]
@@ -71,6 +72,7 @@ dependencies = [
 [[package]]
 name = "bevy_app"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "bevy_derive",
  "bevy_ecs",
@@ -84,6 +86,7 @@ dependencies = [
 [[package]]
 name = "bevy_core"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "bevy_app",
  "bevy_ecs",
@@ -95,6 +98,7 @@ dependencies = [
 [[package]]
 name = "bevy_derive"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "bevy_macro_utils",
  "quote",
@@ -104,6 +108,7 @@ dependencies = [
 [[package]]
 name = "bevy_diagnostic"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "bevy_app",
  "bevy_core",
@@ -115,6 +120,7 @@ dependencies = [
 [[package]]
 name = "bevy_ecs"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "async-channel",
  "bevy_ecs_macros",
@@ -131,6 +137,7 @@ dependencies = [
 [[package]]
 name = "bevy_ecs_macros"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "bevy_macro_utils",
  "proc-macro2",
@@ -141,6 +148,7 @@ dependencies = [
 [[package]]
 name = "bevy_hierarchy"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "bevy_app",
  "bevy_core",
@@ -151,6 +159,7 @@ dependencies = [
 [[package]]
 name = "bevy_input"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "bevy_app",
  "bevy_ecs",
@@ -162,6 +171,7 @@ dependencies = [
 [[package]]
 name = "bevy_internal"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "bevy_app",
  "bevy_core",
@@ -181,6 +191,7 @@ dependencies = [
 [[package]]
 name = "bevy_macro_utils"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -192,6 +203,7 @@ dependencies = [
 [[package]]
 name = "bevy_math"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "glam",
  "libm",
@@ -200,10 +212,12 @@ dependencies = [
 [[package]]
 name = "bevy_ptr"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 
 [[package]]
 name = "bevy_time"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "bevy_app",
  "bevy_ecs",
@@ -215,6 +229,7 @@ dependencies = [
 [[package]]
 name = "bevy_transform"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "bevy_app",
  "bevy_ecs",
@@ -226,6 +241,7 @@ dependencies = [
 [[package]]
 name = "bevy_utils"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "ahash",
  "bevy_utils_proc_macros",
@@ -245,6 +261,7 @@ dependencies = [
 [[package]]
 name = "bevy_utils_proc_macros"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -254,6 +271,7 @@ dependencies = [
 [[package]]
 name = "bevy_window"
 version = "0.12.0"
+source = "git+https://github.com/maximetinu/bevy.git?branch=nostd#e9aba963153b024dfc41bc4c4ebb879021ed12f2"
 dependencies = [
  "bevy_app",
  "bevy_ecs",
@@ -339,6 +357,7 @@ dependencies = [
 [[package]]
 name = "crankstart"
 version = "0.1.2"
+source = "git+https://github.com/pd-rs/crankstart.git#64391611b5356f3ee9761511a65cf4a681f19e76"
 dependencies = [
  "anyhow",
  "arrayvec",
@@ -351,6 +370,7 @@ dependencies = [
 [[package]]
 name = "crankstart-sys"
 version = "0.1.2"
+source = "git+https://github.com/pd-rs/crankstart.git#64391611b5356f3ee9761511a65cf4a681f19e76"
 dependencies = [
  "euclid",
 ]
@@ -508,6 +528,7 @@ dependencies = [
 [[package]]
 name = "instant"
 version = "0.1.13"
+source = "git+https://github.com/maximetinu/instant.git?branch=nostd#e7da196d0cd2b50f92b77bba0f1e69218eed3cda"
 dependencies = [
  "cfg-if",
  "crankstart-sys",
@@ -613,6 +634,7 @@ dependencies = [
 [[package]]
 name = "petgraph"
 version = "0.6.4"
+source = "git+https://github.com/maximetinu/petgraph.git?branch=nostd#77b2f2e587409b67780c9e8e08bd8275c4593198"
 dependencies = [
  "ahash",
  "fixedbitset",
