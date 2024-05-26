@@ -21,7 +21,7 @@ use {
         Game, Playdate,
     },
     crankstart_sys::{LCD_COLUMNS, LCD_ROWS},
-    euclid::{point2, vec2},
+    euclid::vec2,
 };
 use alloc::string::{String, ToString};
 
@@ -146,7 +146,7 @@ fn clear_framebuffer() {
 
 fn draw_text(mut text_q: Query<(&Text, &mut Location)>) {
     let graphics = Graphics::get();
-    for (text_str, mut text_location) in text_q.iter_mut() {
+    for (text_str, text_location) in text_q.iter_mut() {
         graphics.draw_text(text_str, **text_location).unwrap();
     }
 }
@@ -270,15 +270,8 @@ impl Game for State {
     }
 }
 
-const INITIAL_X: i32 = (400 - TEXT_WIDTH) / 2;
-const INITIAL_Y: i32 = (240 - TEXT_HEIGHT) / 2;
-
-const TEXT_WIDTH: i32 = 86;
-const TEXT_HEIGHT: i32 = 16;
-
 crankstart_game!(State);
 
-#[cfg(not(cortex_m))]
 mod bad_critical_section {
     use critical_section::{set_impl, Impl, RawRestoreState};
 
@@ -290,7 +283,7 @@ mod bad_critical_section {
             false
         }
 
-        unsafe fn release(was_active: RawRestoreState) {
+        unsafe fn release(_was_active: RawRestoreState) {
             // We're really dumb.
         }
     }
