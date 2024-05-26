@@ -2,6 +2,7 @@
 
 extern crate alloc;
 
+use alloc::string::{String, ToString};
 use bevy::app::{App, PreUpdate, Startup, Update};
 use bevy::ecs::component::Component;
 use bevy::ecs::query::With;
@@ -23,7 +24,6 @@ use {
     crankstart_sys::{LCD_COLUMNS, LCD_ROWS},
     euclid::vec2,
 };
-use alloc::string::{String, ToString};
 
 struct State {
     // location: ScreenPoint,
@@ -84,64 +84,58 @@ fn setup_example(mut commands: Commands) {
     const TEXT_HEIGHT: i32 = 16;
     const INITIAL_X_HELLO: i32 = (350 - TEXT_WIDTH) / 2;
     const INITIAL_Y: i32 = (240 - TEXT_HEIGHT) / 2;
-    commands.spawn(
-        (
-            Text("Hello".to_string()),
-            Location(ScreenPoint::new(INITIAL_X_HELLO, INITIAL_Y)),
-            Velocity(vec2(-1, 2)),
-            Extents {
-                width: TEXT_WIDTH,
-                height: TEXT_HEIGHT,
-            }
-        )
-    );
+    commands.spawn((
+        Text("Hello".to_string()),
+        Location(ScreenPoint::new(INITIAL_X_HELLO, INITIAL_Y)),
+        Velocity(vec2(-1, 2)),
+        Extents {
+            width: TEXT_WIDTH,
+            height: TEXT_HEIGHT,
+        },
+    ));
 
     const INITIAL_X_WORLD: i32 = (450 - TEXT_WIDTH) / 2;
-    commands.spawn(
-        (
-            Text("World".to_string()),
-            Location(ScreenPoint::new(INITIAL_X_WORLD, INITIAL_Y)),
-            Velocity(vec2(1, 2)),
-            Extents {
-                width: TEXT_WIDTH,
-                height: TEXT_HEIGHT,
-            }
-        )
-    );
+    commands.spawn((
+        Text("World".to_string()),
+        Location(ScreenPoint::new(INITIAL_X_WORLD, INITIAL_Y)),
+        Velocity(vec2(1, 2)),
+        Extents {
+            width: TEXT_WIDTH,
+            height: TEXT_HEIGHT,
+        },
+    ));
 
-    commands.spawn(
-        (
-            PdSprite(load_sprite().unwrap()),
-            Location(ScreenPoint::new(200, 120)),
-            Velocity(vec2(-1, -2)),
-            // TODO: extents don't bounce as I expected
-            Extents {
-                width: 0,
-                height: 0,
-            },
-            Visibility(true),
-        )
-    );
+    commands.spawn((
+        PdSprite(load_sprite().unwrap()),
+        Location(ScreenPoint::new(200, 120)),
+        Velocity(vec2(-1, -2)),
+        // TODO: extents don't bounce as I expected
+        Extents {
+            width: 0,
+            height: 0,
+        },
+        Visibility(true),
+    ));
 
-    commands.spawn(
-        (
-            PdSprite(load_sprite().unwrap()),
-            Location(ScreenPoint::new(220, 120)),
-            Velocity(vec2(1, -2)),
-            // TODO: extents don't bounce as I expected
-            Extents {
-                width: 0,
-                height: 0,
-            },
-            Visibility(false),
-        )
-    );
+    commands.spawn((
+        PdSprite(load_sprite().unwrap()),
+        Location(ScreenPoint::new(220, 120)),
+        Velocity(vec2(1, -2)),
+        // TODO: extents don't bounce as I expected
+        Extents {
+            width: 0,
+            height: 0,
+        },
+        Visibility(false),
+    ));
 }
 
 fn clear_framebuffer() {
     let graphics = Graphics::get();
     graphics.clear_context().unwrap();
-    graphics.clear(LCDColor::Solid(LCDSolidColor::kColorWhite)).unwrap();
+    graphics
+        .clear(LCDColor::Solid(LCDSolidColor::kColorWhite))
+        .unwrap();
 }
 
 fn draw_text(mut text_q: Query<(&Text, &mut Location)>) {
@@ -158,7 +152,7 @@ fn move_and_bounce(mut movable_q: Query<(&mut Location, &mut Velocity, &Extents)
         if location.x < 0 || location.x > LCD_COLUMNS as i32 - extents.width {
             velocity.x = -velocity.x;
         }
-    
+
         if location.y < 0 || location.y > LCD_ROWS as i32 - extents.height {
             velocity.y = -velocity.y;
         }
@@ -188,7 +182,9 @@ fn apply_visibility(mut sprite_q: Query<(&mut PdSprite, &Visibility)>) {
 
 fn draw_sprites(mut sprite_q: Query<(&mut PdSprite, &Location)>) {
     for (mut sprite, location) in sprite_q.iter_mut() {
-        sprite.move_to(location.x as f32, location.y as f32).unwrap();
+        sprite
+            .move_to(location.x as f32, location.y as f32)
+            .unwrap();
         sprite.set_z_index(10).unwrap();
         sprite.set_opaque(false).unwrap();
     }
@@ -198,7 +194,6 @@ fn draw_fps() {
     System::get().draw_fps(0, 0).unwrap();
 }
 
-
 impl State {
     pub fn new(_playdate: &Playdate) -> Result<Box<Self>, Error> {
         crankstart::display::Display::get().set_refresh_rate(20.0)?;
@@ -206,8 +201,7 @@ impl State {
 
         let mut app = App::new();
 
-        app
-            .add_systems(Update, print_tick)
+        app.add_systems(Update, print_tick)
             // THIS PANICS
             // .add_systems(Update, update_example)
             .add_systems(PreUpdate, clear_framebuffer)
@@ -223,7 +217,7 @@ impl State {
             // location: point2(INITIAL_X, INITIAL_Y),
             // velocity: vec2(1, 2),
             // sprite,
-            app
+            app,
         }))
     }
 }
