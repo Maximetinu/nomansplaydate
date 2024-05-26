@@ -26,4 +26,6 @@ crankstart-sys = { git = "https://github.com/pd-rs/crankstart.git" }
 bevy = { git = "https://github.com/maximetinu/bevy.git", branch = "nostd", default-features = false, features = ["no_std"] }
 cortex-m = { version = "0.7", features = ["critical-section-single-core"]}
 critical-section = "1"
+getrandom = { version = "0.2", default-features = false, features = ["custom"] }
+rand = { version = "0.8", default-features = false, features = ["small_rng"] }
 

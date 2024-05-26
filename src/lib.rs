@@ -5,8 +5,10 @@ extern crate alloc;
 use alloc::string::{String, ToString};
 use bevy::app::{App, PreUpdate, Startup, Update};
 use bevy::ecs::component::Component;
+use bevy::ecs::entity::Entity;
 use bevy::ecs::query::With;
-use bevy::ecs::system::{Commands, Query};
+use bevy::ecs::system::Local;
+use bevy::ecs::system::{Commands, Query, Res, ResMut, Resource};
 use bevy::prelude::{Deref, DerefMut};
 use crankstart::log_to_console;
 use crankstart::sprite::{Sprite, SpriteManager};
@@ -82,33 +84,43 @@ fn print_tick() {
 fn setup_example(mut commands: Commands) {
     const TEXT_WIDTH: i32 = 86;
     const TEXT_HEIGHT: i32 = 16;
-    const INITIAL_X_HELLO: i32 = (350 - TEXT_WIDTH) / 2;
-    const INITIAL_Y: i32 = (240 - TEXT_HEIGHT) / 2;
+
+    let random_pos_x = generate_random_number_in_range(150, 250) as i32;
+    let random_pos_y = generate_random_number_in_range(100, 140) as i32;
+    let random_vel_x = generate_random_number_in_range(0, 10) as i32 - 5i32;
+    let random_vel_y = generate_random_number_in_range(0, 10) as i32 - 5i32;
     commands.spawn((
         Text("Hello".to_string()),
-        Location(ScreenPoint::new(INITIAL_X_HELLO, INITIAL_Y)),
-        Velocity(vec2(-1, 2)),
+        Location(ScreenPoint::new(random_pos_x, random_pos_y)),
+        Velocity(vec2(random_vel_x, random_vel_y)),
         Extents {
             width: TEXT_WIDTH,
             height: TEXT_HEIGHT,
         },
     ));
 
-    const INITIAL_X_WORLD: i32 = (450 - TEXT_WIDTH) / 2;
+    let random_pos_x = generate_random_number_in_range(150, 250) as i32;
+    let random_pos_y = generate_random_number_in_range(100, 140) as i32;
+    let random_vel_x = generate_random_number_in_range(0, 10) as i32 - 5i32;
+    let random_vel_y = generate_random_number_in_range(0, 10) as i32 - 5i32;
     commands.spawn((
         Text("World".to_string()),
-        Location(ScreenPoint::new(INITIAL_X_WORLD, INITIAL_Y)),
-        Velocity(vec2(1, 2)),
+        Location(ScreenPoint::new(random_pos_x, random_pos_y)),
+        Velocity(vec2(random_vel_x, random_vel_y)),
         Extents {
             width: TEXT_WIDTH,
             height: TEXT_HEIGHT,
         },
     ));
 
+    let random_pos_x = generate_random_number_in_range(150, 250) as i32;
+    let random_pos_y = generate_random_number_in_range(100, 140) as i32;
+    let random_vel_x = generate_random_number_in_range(0, 10) as i32 - 5i32;
+    let random_vel_y = generate_random_number_in_range(0, 10) as i32 - 5i32;
     commands.spawn((
         PdSprite(load_sprite().unwrap()),
-        Location(ScreenPoint::new(200, 120)),
-        Velocity(vec2(-1, -2)),
+        Location(ScreenPoint::new(random_pos_x, random_pos_y)),
+        Velocity(vec2(random_vel_x, random_vel_y)),
         // TODO: extents don't bounce as I expected
         Extents {
             width: 0,
@@ -117,10 +129,14 @@ fn setup_example(mut commands: Commands) {
         Visibility(true),
     ));
 
+    let random_pos_x = generate_random_number_in_range(150, 250) as i32;
+    let random_pos_y = generate_random_number_in_range(100, 140) as i32;
+    let random_vel_x = generate_random_number_in_range(0, 10) as i32 - 5i32;
+    let random_vel_y = generate_random_number_in_range(0, 10) as i32 - 5i32;
     commands.spawn((
         PdSprite(load_sprite().unwrap()),
-        Location(ScreenPoint::new(220, 120)),
-        Velocity(vec2(1, -2)),
+        Location(ScreenPoint::new(random_pos_x, random_pos_y)),
+        Velocity(vec2(random_vel_x, random_vel_y)),
         // TODO: extents don't bounce as I expected
         Extents {
             width: 0,
@@ -194,12 +210,72 @@ fn draw_fps() {
     System::get().draw_fps(0, 0).unwrap();
 }
 
+#[derive(Resource, Default, Clone, Copy, Deref, DerefMut, PartialEq, Eq, PartialOrd, Ord)]
+struct TargetInstanceCount(pub usize);
+
+fn spawn_despawn_sprites_to_match_instance_count(
+    mut commands: Commands,
+    target_instance_count: Res<TargetInstanceCount>,
+    sprites_q: Query<Entity, With<PdSprite>>,
+) {
+    let current_instance_count = sprites_q.iter().len();
+
+    let difference = current_instance_count as i32 - **target_instance_count as i32;
+
+    if difference > 0 {
+        // there are more than should be, let's despawn them
+        let mut i = 0;
+        for e in sprites_q.iter() {
+            commands.entity(e).despawn();
+            i += 1;
+            if i == difference {
+                break;
+            }
+        }
+    } else if difference < 0 {
+        // there are less than should be, let's spawn new ones
+        let mut i = difference;
+        while i != 0 {
+            let random_pos_x = generate_random_number_in_range(150, 250) as i32;
+            let random_pos_y = generate_random_number_in_range(100, 140) as i32;
+            let random_vel_x = generate_random_number_in_range(0, 10) as i32 - 5i32;
+            let random_vel_y = generate_random_number_in_range(0, 10) as i32 - 5i32;
+            commands.spawn((
+                PdSprite(load_sprite().unwrap()),
+                Location(ScreenPoint::new(random_pos_x, random_pos_y)),
+                Velocity(vec2(random_vel_x, random_vel_y)),
+                // TODO: extents don't bounce as I expected
+                Extents {
+                    width: 0,
+                    height: 0,
+                },
+                Visibility(true),
+            ));
+            i += 1;
+        }
+    }
+}
+
+fn increment_target_instance_count(
+    mut target_instance_count: ResMut<TargetInstanceCount>,
+    mut frame_number: Local<u32>,
+) {
+    *frame_number += 1;
+    *frame_number %= 1; // increment this to slow down spawn rate
+
+    if *frame_number == 0 {
+        **target_instance_count += 1;
+    }
+}
+
 impl State {
     pub fn new(_playdate: &Playdate) -> Result<Box<Self>, Error> {
-        crankstart::display::Display::get().set_refresh_rate(20.0)?;
+        // crankstart::display::Display::get().set_refresh_rate(20.0)?; // FPS
         // let sprite = load_sprite()?;
 
         let mut app = App::new();
+
+        app.init_resource::<TargetInstanceCount>();
 
         app.add_systems(Update, print_tick)
             // THIS PANICS
@@ -211,6 +287,8 @@ impl State {
             .add_systems(Update, apply_visibility)
             .add_systems(Update, draw_sprites)
             .add_systems(Update, draw_fps)
+            .add_systems(Update, increment_target_instance_count)
+            .add_systems(Update, spawn_despawn_sprites_to_match_instance_count)
             .add_systems(Startup, setup_example);
 
         Ok(Box::new(Self {
@@ -283,20 +361,42 @@ mod bad_critical_section {
     }
 }
 
-// extern crate getrandom;
+extern crate getrandom;
 
-// const SEED_MASK: u64 = 0xdeadbeefbadc0ded;
+#[allow(dead_code)]
+fn generate_random_number() -> u32 {
+    let mut buffer = [0u8; 4];
+    getrandom::getrandom(&mut buffer).unwrap();
+    u32::from_ne_bytes(buffer)
+}
 
-// fn getrandom_seeded(dest: &mut [u8]) -> Result<(), getrandom::Error> {
-//     let seconds = crankstart::system::System::get()
-//         .get_seconds_since_epoch()
-//         .unwrap();
-//     let seed = seconds.1 as u64 + (seconds.0 as u64) << 32;
-//     let seed = SEED_MASK ^ seed;
+fn generate_random_number_in_range(min: u32, max: u32) -> u32 {
+    use rand::Rng;
+    use rand::SeedableRng;
 
-//     let mut rng = rand::rngs::SmallRng::seed_from_u64(seed);
-//     rng.fill(dest);
-//     Ok(())
-// }
+    let mut buffer = [0u8; 8]; // Using 8 bytes for a larger seed space
+    getrandom::getrandom(&mut buffer).unwrap();
+    let seed = u64::from_ne_bytes(buffer);
 
-// getrandom::register_custom_getrandom!(getrandom_seeded);
+    let mut rng = rand::rngs::SmallRng::seed_from_u64(seed);
+    rng.gen_range(min..max)
+}
+
+const SEED_MASK: u64 = 0xdeadbeefbadc0ded;
+
+fn getrandom_seeded(dest: &mut [u8]) -> Result<(), getrandom::Error> {
+    use rand::Rng;
+    use rand::SeedableRng;
+
+    let seconds = crankstart::system::System::get()
+        .get_seconds_since_epoch()
+        .unwrap();
+    let seed = seconds.1 as u64 + (seconds.0 as u64) << 32;
+    let seed = SEED_MASK ^ seed;
+
+    let mut rng = rand::rngs::SmallRng::seed_from_u64(seed);
+    rng.fill(dest);
+    Ok(())
+}
+
+getrandom::register_custom_getrandom!(getrandom_seeded);
