@@ -7,7 +7,6 @@ use bevy::app::{App, PreUpdate, Startup, Update};
 use bevy::ecs::component::Component;
 use bevy::ecs::entity::Entity;
 use bevy::ecs::query::With;
-use bevy::ecs::system::Local;
 use bevy::ecs::system::{Commands, Query, Res, ResMut, Resource};
 use bevy::prelude::{Deref, DerefMut};
 use crankstart::log_to_console;
@@ -77,7 +76,7 @@ fn load_sprite() -> Result<Sprite, Error> {
 }
 
 fn print_tick() {
-    log_to_console!("TICK!");
+    // log_to_console!("TICK!");
 }
 
 // TODO: put some for loops and setup a benchmark
@@ -211,7 +210,7 @@ fn draw_fps() {
 }
 
 #[derive(Resource, Default, Clone, Copy, Deref, DerefMut, PartialEq, Eq, PartialOrd, Ord)]
-struct TargetInstanceCount(pub usize);
+struct TargetInstanceCount(pub i64);
 
 fn spawn_despawn_sprites_to_match_instance_count(
     mut commands: Commands,
@@ -256,16 +255,31 @@ fn spawn_despawn_sprites_to_match_instance_count(
     }
 }
 
-fn increment_target_instance_count(
-    mut target_instance_count: ResMut<TargetInstanceCount>,
-    mut frame_number: Local<u32>,
-) {
-    *frame_number += 1;
-    *frame_number %= 1; // increment this to slow down spawn rate
+// fn increment_target_instance_count(
+//     mut target_instance_count: ResMut<TargetInstanceCount>,
+//     mut frame_number: Local<u32>,
+// ) {
+//     *frame_number += 1;
+//     *frame_number %= 1; // increment this to slow down spawn rate
 
-    if *frame_number == 0 {
-        **target_instance_count += 1;
+//     if *frame_number == 0 {
+//         **target_instance_count += 1;
+//     }
+// }
+
+fn update_target_instance_count_from_input(mut target_instance_count: ResMut<TargetInstanceCount>) {
+    let change = System::get().get_crank_change().unwrap() as i64;
+
+    if change == 0 {
+        return;
     }
+
+    **target_instance_count += change;
+    if **target_instance_count < 0 {
+        **target_instance_count = 0;
+    }
+
+    log_to_console!("COUNT: {}", **target_instance_count);
 }
 
 impl State {
@@ -287,7 +301,8 @@ impl State {
             .add_systems(Update, apply_visibility)
             .add_systems(Update, draw_sprites)
             .add_systems(Update, draw_fps)
-            .add_systems(Update, increment_target_instance_count)
+            .add_systems(Update, update_target_instance_count_from_input)
+            // .add_systems(Update, increment_target_instance_count)
             .add_systems(Update, spawn_despawn_sprites_to_match_instance_count)
             .add_systems(Startup, setup_example);
 
